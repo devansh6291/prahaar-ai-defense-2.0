@@ -6,28 +6,19 @@ class PrahaarDefensePlatform {
         this.markers = [];
         this.messageId = 4;
         
-        // Initialize the platform
         this.init();
     }
     
     init() {
-        // Update time display
         this.updateTime();
         setInterval(() => this.updateTime(), 1000);
-        
-        // Initialize tab switching
         this.initTabSwitching();
-        
-        // Initialize map when tactical tab is first opened
         document.addEventListener('tabChanged', (e) => {
             if (e.detail.tab === 'map' && !this.map) {
                 setTimeout(() => this.initMap(), 100);
             }
         });
-        
-        // Simulate real-time updates
         this.startRealTimeUpdates();
-        
         console.log('Prahaar-AI Defense Platform v2.0 initialized');
     }
     
@@ -58,22 +49,14 @@ class PrahaarDefensePlatform {
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
                 const targetTab = tab.getAttribute('data-tab');
-                
-                // Remove active class from all tabs and contents
                 tabs.forEach(t => t.classList.remove('active'));
                 contents.forEach(c => c.classList.remove('active'));
-                
-                // Add active class to clicked tab and corresponding content
                 tab.classList.add('active');
                 const targetContent = document.getElementById(targetTab + '-tab');
                 if (targetContent) {
                     targetContent.classList.add('active');
                 }
-                
-                // Update current tab
                 this.currentTab = targetTab;
-                
-                // Dispatch custom event
                 document.dispatchEvent(new CustomEvent('tabChanged', {
                     detail: { tab: targetTab }
                 }));
@@ -83,28 +66,19 @@ class PrahaarDefensePlatform {
     
     initMap() {
         try {
-            // Check if Leaflet is available
             if (typeof L === 'undefined') {
                 console.warn('Leaflet not loaded, showing fallback');
                 this.showMapFallback();
                 return;
             }
-            
-            // Initialize Leaflet map centered on Delhi
             this.map = L.map('tactical-map').setView([28.6139, 77.2090], 13);
-            
-            // Add tile layer
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© OpenStreetMap contributors'
             }).addTo(this.map);
-            
-            // Add markers
             this.addUnitMarkers();
             this.addThreatMarkers();
             this.addSensorMarkers();
-            
             console.log('Tactical map initialized');
-            
         } catch (error) {
             console.error('Failed to initialize map:', error);
             this.showMapFallback();
@@ -135,7 +109,6 @@ class PrahaarDefensePlatform {
             { id: 'CHARLIE-03', name: 'Charlie Air Support', coords: [28.6200, 77.2080], status: 'STANDBY' },
             { id: 'DELTA-04', name: 'Delta Special Ops', coords: [28.6160, 77.2070], status: 'DEPLOYED' }
         ];
-        
         units.forEach(unit => {
             const marker = L.circleMarker(unit.coords, {
                 radius: 8,
@@ -145,7 +118,6 @@ class PrahaarDefensePlatform {
                 opacity: 1,
                 fillOpacity: 0.8
             }).addTo(this.map);
-            
             marker.bindPopup(`
                 <div style="color: #1a202c;">
                     <strong>${unit.id}</strong><br>
@@ -153,7 +125,6 @@ class PrahaarDefensePlatform {
                     Status: <span style="color: #38a169;">${unit.status}</span>
                 </div>
             `);
-            
             this.markers.push(marker);
         });
     }
@@ -164,10 +135,8 @@ class PrahaarDefensePlatform {
             { id: 'T-002', type: 'PERSONNEL', coords: [28.6180, 77.2120], severity: 'MEDIUM' },
             { id: 'T-003', type: 'DRONE', coords: [28.6220, 77.2090], severity: 'HIGH' }
         ];
-        
         threats.forEach(threat => {
             const color = threat.severity === 'HIGH' ? '#f56565' : '#ed8936';
-            
             const marker = L.circleMarker(threat.coords, {
                 radius: 10,
                 fillColor: color,
@@ -176,7 +145,6 @@ class PrahaarDefensePlatform {
                 opacity: 1,
                 fillOpacity: 0.8
             }).addTo(this.map);
-            
             marker.bindPopup(`
                 <div style="color: #1a202c;">
                     <strong>${threat.id}</strong><br>
@@ -184,7 +152,6 @@ class PrahaarDefensePlatform {
                     Severity: <span style="color: ${color};">${threat.severity}</span>
                 </div>
             `);
-            
             this.markers.push(marker);
         });
     }
@@ -195,7 +162,6 @@ class PrahaarDefensePlatform {
             { id: 'DRONE-002', coords: [28.6170, 77.2085], type: 'Tactical' },
             { id: 'GROUND-001', coords: [28.6155, 77.2095], type: 'Perimeter' }
         ];
-        
         sensors.forEach(sensor => {
             const marker = L.circleMarker(sensor.coords, {
                 radius: 6,
@@ -205,7 +171,6 @@ class PrahaarDefensePlatform {
                 opacity: 1,
                 fillOpacity: 0.8
             }).addTo(this.map);
-            
             marker.bindPopup(`
                 <div style="color: #1a202c;">
                     <strong>${sensor.id}</strong><br>
@@ -213,31 +178,25 @@ class PrahaarDefensePlatform {
                     Status: <span style="color: #38a169;">ACTIVE</span>
                 </div>
             `);
-            
             this.markers.push(marker);
         });
     }
     
     startRealTimeUpdates() {
-        // Simulate real-time threat updates
         setInterval(() => {
             this.updateThreatAnalysis();
         }, 5000);
-        
-        // Simulate sensor data updates
         setInterval(() => {
             this.updateSensorData();
         }, 3000);
     }
     
     updateThreatAnalysis() {
-        // Update threat metrics with random variations
         const metrics = document.querySelectorAll('.metric-value');
         if (metrics.length > 0) {
             const values = ['1,247', '98.8%', '2.3s', '67%'];
             metrics.forEach((metric, index) => {
                 if (values[index]) {
-                    // Add small random variation
                     if (index === 0) {
                         const base = 1247;
                         const variation = Math.floor(Math.random() * 10) - 5;
@@ -261,17 +220,16 @@ class PrahaarDefensePlatform {
     }
     
     updateSensorData() {
-        // Simulate battery drain and signal fluctuations
         const batteryElements = document.querySelectorAll('.stat');
         batteryElements.forEach(element => {
             const text = element.textContent;
             if (text.includes('Battery:')) {
-                const currentValue = parseInt(text.match(/\\d+/)[0]);
+                const currentValue = parseInt(text.match(/\d+/)[0]);
                 const variation = Math.floor(Math.random() * 6) - 3;
                 const newValue = Math.max(0, Math.min(100, currentValue + variation));
                 element.textContent = `Battery: ${newValue}%`;
             } else if (text.includes('Signal:')) {
-                const currentValue = parseInt(text.match(/\\d+/)[0]);
+                const currentValue = parseInt(text.match(/\d+/)[0]);
                 const variation = Math.floor(Math.random() * 10) - 5;
                 const newValue = Math.max(0, Math.min(100, currentValue + variation));
                 element.textContent = `Signal: ${newValue}%`;
@@ -279,28 +237,30 @@ class PrahaarDefensePlatform {
         });
     }
 }
-// Global functions for map controls
+
+// Map control functions
 function zoomToThreats() {
     if (window.prahaarPlatform && window.prahaarPlatform.map) {
         window.prahaarPlatform.map.setView([28.6220, 77.2120], 15);
     } else {
-        alert('Map not available - showing threat locations in tactical display');
+        alert('Map not available');
     }
 }
 function zoomToUnits() {
     if (window.prahaarPlatform && window.prahaarPlatform.map) {
         window.prahaarPlatform.map.setView([28.6170, 77.2085], 14);
     } else {
-        alert('Map not available - showing unit positions in tactical display');
+        alert('Map not available');
     }
 }
 function resetView() {
     if (window.prahaarPlatform && window.prahaarPlatform.map) {
         window.prahaarPlatform.map.setView([28.6139, 77.2090], 13);
     } else {
-        alert('Map view reset - showing full operational area');
+        alert('Map not available');
     }
 }
+
 // Communication functions
 function sendMessage() {
     const toUnit = document.getElementById('message-to');
@@ -339,6 +299,7 @@ function sendMessage() {
         }
     }, 1000);
 }
+
 function sendEmergencyAlert() {
     const messageList = document.querySelector('.message-list');
     if (!messageList) return;
@@ -363,6 +324,7 @@ function sendEmergencyAlert() {
     messageList.scrollTop = messageList.scrollHeight;
     alert('Emergency alert broadcast to all units!');
 }
+
 function requestStatus() {
     const messageList = document.querySelector('.message-list');
     if (!messageList) return;
@@ -387,6 +349,7 @@ function requestStatus() {
     messageList.scrollTop = messageList.scrollHeight;
     alert('Status report requested from all units!');
 }
+
 function initiateEvac() {
     const messageList = document.querySelector('.message-list');
     if (!messageList) return;
@@ -411,11 +374,11 @@ function initiateEvac() {
     messageList.scrollTop = messageList.scrollHeight;
     alert('Evacuation protocol initiated!');
 }
-// Initialize the platform when DOM is loaded
+
 document.addEventListener('DOMContentLoaded', () => {
     window.prahaarPlatform = new PrahaarDefensePlatform();
 });
-// Handle visibility changes to pause/resume updates
+
 document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
         console.log('Platform paused');
@@ -423,3 +386,4 @@ document.addEventListener('visibilitychange', () => {
         console.log('Platform resumed');
     }
 });
+
