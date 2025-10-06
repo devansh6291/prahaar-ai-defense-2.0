@@ -1,0 +1,17 @@
+{
+  "name": "prahaar-ai-defense-platform",
+  "version": "2.0.0",
+  "description": "Prahaar-AI Indigenous Defense Command Platform",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve -s .",
+    "build": "echo 'No build process needed for static site'",
+    "dev": "serve -s ."
+  },
+  "keywords": ["defense", "AI", "military", "command", "control", "prahaar"],
+  "author": "Prahaar-AI Team",
+  "license": "MIT",
+  "dependencies": {
+    "serve": "^14.2.0"
+  }
+}

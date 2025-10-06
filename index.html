@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Prahaar-AI Defense Command Platform v2.0</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div class="command-platform">
+        <!-- Header -->
+        <header class="command-header">
+            <div class="header-left">
+                <div class="system-logo">
+                    <div class="logo-icon">⚡</div>
+                    <div class="logo-text">
+                        <h1>Prahaar-AI v2.0</h1>
+                        <span class="classification">RESTRICTED</span>
+                    </div>
+                </div>
+                <div class="system-status">
+                    <div class="status-item">
+                        <span class="status-dot operational"></span>
+                        <span>AI Engine</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-dot operational"></span>
+                        <span>Network</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-dot operational"></span>
+                        <span>Sensors</span>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="time-display" id="current-time"></div>
+                <div class="weather-widget">
+                    <span id="weather-temp">26°C</span>
+                    <span id="weather-condition">Clear</span>
+                </div>
+                <div class="alert-counter">
+                    <span class="alert-icon">🚨</span>
+                    <span id="active-alerts">3</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="command-nav">
+            <div class="nav-tabs">
+                <button class="nav-tab active" data-tab="dashboard">
+                    <span class="tab-icon">🎛️</span> Command Dashboard
+                </button>
+                <button class="nav-tab" data-tab="map">
+                    <span class="tab-icon">🗺️</span> Tactical Map
+                </button>
+                <button class="nav-tab" data-tab="intelligence">
+                    <span class="tab-icon">🧠</span> Intelligence Hub
+                </button>
+                <button class="nav-tab" data-tab="communications">
+                    <span class="tab-icon">📡</span> Communications
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="command-content">
+            <!-- Dashboard Tab -->
+            <div class="tab-content active" id="dashboard-tab">
+                <div class="dashboard-grid">
+                    <!-- System Status Card -->
+                    <div class="status-card">
+                        <h3>System Status</h3>
+                        <div class="status-grid">
+                            <div class="status-item">
+                                <span class="status-dot operational"></span>
+                                <span>AI Engine: OPERATIONAL</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-dot operational"></span>
+                                <span>Communications: SECURE</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-dot operational"></span>
+                                <span>Sensors: ACTIVE</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-dot operational"></span>
+                                <span>Network: STABLE</span>
+                            </div>
+                        </div>
+                        <div class="uptime-display">
+                            System Uptime: <span class="uptime-value">99.7%</span>
+                        </div>
+                    </div>
+
+                    <!-- Active Threats Card -->
+                    <div class="threats-card">
+                        <h3>Active Threats</h3>
+                        <div class="threat-list">
+                            <div class="threat-item high">
+                                <div class="threat-severity">HIGH</div>
+                                <div class="threat-details">
+                                    <div class="threat-type">VEHICLE</div>
+                                    <div class="threat-desc">Unidentified armored vehicle approaching checkpoint</div>
+                                    <div class="threat-confidence">Confidence: 91%</div>
+                                </div>
+                            </div>
+                            <div class="threat-item medium">
+                                <div class="threat-severity">MEDIUM</div>
+                                <div class="threat-details">
+                                    <div class="threat-type">PERSONNEL</div>
+                                    <div class="threat-desc">Suspicious movement in restricted zone</div>
+                                    <div class="threat-confidence">Confidence: 76%</div>
+                                </div>
+                            </div>
+                            <div class="threat-item high">
+                                <div class="threat-severity">HIGH</div>
+                                <div class="threat-details">
+                                    <div class="threat-type">DRONE</div>
+                                    <div class="threat-desc">Unauthorized aerial object in no-fly zone</div>
+                                    <div class="threat-confidence">Confidence: 85%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Unit Status Card -->
+                    <div class="units-card">
+                        <h3>Unit Status</h3>
+                        <div class="units-list">
+                            <div class="unit-item">
+                                <div class="unit-id">ALPHA-01</div>
+                                <div class="unit-name">Alpha Squadron</div>
+                                <div class="unit-status active">ACTIVE</div>
+                                <div class="unit-readiness">95% Ready</div>
+                            </div>
+                            <div class="unit-item">
+                                <div class="unit-id">BRAVO-02</div>
+                                <div class="unit-name">Bravo Armored</div>
+                                <div class="unit-status active">ACTIVE</div>
+                                <div class="unit-readiness">88% Ready</div>
+                            </div>
+                            <div class="unit-item">
+                                <div class="unit-id">CHARLIE-03</div>
+                                <div class="unit-name">Charlie Air Support</div>
+                                <div class="unit-status standby">STANDBY</div>
+                                <div class="unit-readiness">92% Ready</div>
+                            </div>
+                            <div class="unit-item">
+                                <div class="unit-id">DELTA-04</div>
+                                <div class="unit-name">Delta Special Ops</div>
+                                <div class="unit-status deployed">DEPLOYED</div>
+                                <div class="unit-readiness">100% Ready</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mission Status Card -->
+                    <div class="mission-card">
+                        <h3>Active Missions</h3>
+                        <div class="mission-list">
+                            <div class="mission-item">
+                                <div class="mission-name">Operation Guardian Shield</div>
+                                <div class="mission-status high-priority">HIGH PRIORITY</div>
+                                <div class="mission-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 65%"></div>
+                                    </div>
+                                    <span>65% Complete</span>
+                                </div>
+                                <div class="mission-units">Units: ALPHA-01, BRAVO-02, DELTA-04</div>
+                            </div>
+                            <div class="mission-item">
+                                <div class="mission-name">Operation Eagle Eye</div>
+                                <div class="mission-status medium-priority">MEDIUM PRIORITY</div>
+                                <div class="mission-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 15%"></div>
+                                    </div>
+                                    <span>15% Complete</span>
+                                </div>
+                                <div class="mission-units">Units: CHARLIE-03</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tactical Map Tab -->
+            <div class="tab-content" id="map-tab">
+                <div class="map-container">
+                    <div class="map-header">
+                        <h3>Tactical Battlefield Map</h3>
+                        <div class="map-controls">
+                            <button class="map-btn" onclick="zoomToThreats()">View Threats</button>
+                            <button class="map-btn" onclick="zoomToUnits()">View Units</button>
+                            <button class="map-btn" onclick="resetView()">Reset View</button>
+                        </div>
+                    </div>
+                    <div id="tactical-map" class="tactical-map"></div>
+                    <div class="map-legend">
+                        <h4>Legend</h4>
+                        <div class="legend-item">
+                            <span class="legend-marker friendly"></span>
+                            <span>Friendly Units</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-marker threat-high"></span>
+                            <span>High Threat</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-marker threat-medium"></span>
+                            <span>Medium Threat</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-marker sensor"></span>
+                            <span>Sensor Network</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Intelligence Hub Tab -->
+            <div class="tab-content" id="intelligence-tab">
+                <div class="intelligence-grid">
+                    <!-- AI Analysis Card -->
+                    <div class="analysis-card">
+                        <h3>AI Threat Analysis</h3>
+                        <div class="analysis-metrics">
+                            <div class="metric">
+                                <div class="metric-value">1,247</div>
+                                <div class="metric-label">Threats Processed</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">98.8%</div>
+                                <div class="metric-label">Accuracy Rate</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">2.3s</div>
+                                <div class="metric-label">Response Time</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">67%</div>
+                                <div class="metric-label">System Load</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sensor Status Card -->
+                    <div class="sensors-card">
+                        <h3>Sensor Network Status</h3>
+                        <div class="sensor-list">
+                            <div class="sensor-item">
+                                <div class="sensor-info">
+                                    <div class="sensor-id">DRONE-001</div>
+                                    <div class="sensor-type">Aerial Surveillance</div>
+                                </div>
+                                <div class="sensor-stats">
+                                    <div class="stat">Battery: 78%</div>
+                                    <div class="stat">Signal: 95%</div>
+                                    <div class="sensor-status active">ACTIVE</div>
+                                </div>
+                            </div>
+                            <div class="sensor-item">
+                                <div class="sensor-info">
+                                    <div class="sensor-id">DRONE-002</div>
+                                    <div class="sensor-type">Tactical Reconnaissance</div>
+                                </div>
+                                <div class="sensor-stats">
+                                    <div class="stat">Battery: 67%</div>
+                                    <div class="stat">Signal: 88%</div>
+                                    <div class="sensor-status active">ACTIVE</div>
+                                </div>
+                            </div>
+                            <div class="sensor-item">
+                                <div class="sensor-info">
+                                    <div class="sensor-id">SAT-001</div>
+                                    <div class="sensor-type">Satellite Feed</div>
+                                </div>
+                                <div class="sensor-stats">
+                                    <div class="stat">Battery: 100%</div>
+                                    <div class="stat">Signal: 92%</div>
+                                    <div class="sensor-status active">ACTIVE</div>
+                                </div>
+                            </div>
+                            <div class="sensor-item">
+                                <div class="sensor-info">
+                                    <div class="sensor-id">GROUND-001</div>
+                                    <div class="sensor-type">Perimeter Sensors</div>
+                                </div>
+                                <div class="sensor-stats">
+                                    <div class="stat">Battery: 85%</div>
+                                    <div class="stat">Signal: 94%</div>
+                                    <div class="sensor-status active">ACTIVE</div>
+                                </div>
+                            </div>
+                            <div class="sensor-item">
+                                <div class="sensor-info">
+                                    <div class="sensor-id">GROUND-002</div>
+                                    <div class="sensor-type">Motion Detectors</div>
+                                </div>
+                                <div class="sensor-stats">
+                                    <div class="stat">Battery: 45%</div>
+                                    <div class="stat">Signal: 72%</div>
+                                    <div class="sensor-status maintenance">MAINTENANCE</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Intelligence Reports Card -->
+                    <div class="reports-card">
+                        <h3>Recent Intelligence Reports</h3>
+                        <div class="reports-list">
+                            <div class="report-item">
+                                <div class="report-time">09:25</div>
+                                <div class="report-content">
+                                    <div class="report-title">High-Priority Threat Detected</div>
+                                    <div class="report-desc">Unidentified armored vehicle with military-grade armor detected. Non-standard markings observed.</div>
+                                    <div class="report-recommendation">Recommendation: Deploy immediate response team</div>
+                                </div>
+                            </div>
+                            <div class="report-item">
+                                <div class="report-time">09:30</div>
+                                <div class="report-content">
+                                    <div class="report-title">Suspicious Personnel Activity</div>
+                                    <div class="report-desc">Multiple individuals showing coordinated movement patterns in restricted zone.</div>
+                                    <div class="report-recommendation">Recommendation: Increase surveillance, prepare interception</div>
+                                </div>
+                            </div>
+                            <div class="report-item">
+                                <div class="report-time">09:33</div>
+                                <div class="report-content">
+                                    <div class="report-title">Unauthorized Aerial Object</div>
+                                    <div class="report-desc">Small UAV detected in no-fly zone, possible surveillance equipment identified.</div>
+                                    <div class="report-recommendation">Recommendation: Activate air defense protocols</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Communications Tab -->
+            <div class="tab-content" id="communications-tab">
+                <div class="communications-layout">
+                    <!-- Message List -->
+                    <div class="messages-panel">
+                        <h3>Secure Communications</h3>
+                        <div class="message-list">
+                            <div class="message-item received">
+                                <div class="message-header">
+                                    <span class="message-from">ALPHA-01</span>
+                                    <span class="message-time">09:35</span>
+                                    <span class="message-priority normal">NORMAL</span>
+                                </div>
+                                <div class="message-content">
+                                    Perimeter sweep complete, no hostile contacts. Proceeding to checkpoint Charlie.
+                                </div>
+                                <div class="message-status">✓ DELIVERED</div>
+                            </div>
+                            <div class="message-item sent">
+                                <div class="message-header">
+                                    <span class="message-from">COMMAND</span>
+                                    <span class="message-time">09:32</span>
+                                    <span class="message-priority high">HIGH</span>
+                                </div>
+                                <div class="message-content">
+                                    PRIORITY: Investigate Grid Reference 341.567. Possible armor movement detected.
+                                </div>
+                                <div class="message-status">✓ READ</div>
+                            </div>
+                            <div class="message-item received">
+                                <div class="message-header">
+                                    <span class="message-from">DELTA-04</span>
+                                    <span class="message-time">09:38</span>
+                                    <span class="message-priority normal">NORMAL</span>
+                                </div>
+                                <div class="message-content">
+                                    Recon complete. Target area clear. RTB in 30 minutes.
+                                </div>
+                                <div class="message-status">✓ DELIVERED</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Message Composer -->
+                    <div class="composer-panel">
+                        <h4>Send Message</h4>
+                        <form class="message-form">
+                            <div class="form-group">
+                                <label for="message-to">To Unit:</label>
+                                <select id="message-to" class="form-select">
+                                    <option value="ALPHA-01">ALPHA-01 - Alpha Squadron</option>
+                                    <option value="BRAVO-02">BRAVO-02 - Bravo Armored</option>
+                                    <option value="CHARLIE-03">CHARLIE-03 - Charlie Air Support</option>
+                                    <option value="DELTA-04">DELTA-04 - Delta Special Ops</option>
+                                    <option value="ALL">ALL UNITS</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="message-priority">Priority:</label>
+                                <select id="message-priority" class="form-select">
+                                    <option value="NORMAL">NORMAL</option>
+                                    <option value="HIGH">HIGH</option>
+                                    <option value="EMERGENCY">EMERGENCY</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="message-text">Message:</label>
+                                <textarea id="message-text" class="form-textarea" rows="4" placeholder="Enter secure message..."></textarea>
+                            </div>
+                            <button type="button" class="send-btn" onclick="sendMessage()">
+                                🔒 Send Encrypted Message
+                            </button>
+                        </form>
+
+                        <!-- Quick Actions -->
+                        <div class="quick-actions">
+                            <h4>Quick Actions</h4>
+                            <button class="action-btn" onclick="sendEmergencyAlert()">🚨 Emergency Alert</button>
+                            <button class="action-btn" onclick="requestStatus()">📊 Status Report</button>
+                            <button class="action-btn" onclick="initiateEvac()">⚠️ Evacuation Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
